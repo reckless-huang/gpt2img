@@ -462,8 +462,9 @@ const generateImages = async () => {
 }
 
 const downloadImage = (dataUrl, index) => {
+  const timestamp = new Date().toISOString().replace(/[:.]/g, '-')
   const link = document.createElement('a')
-  link.download = `chat-image-${index + 1}.png`
+  link.download = `chat-${timestamp}-${index + 1}.png`
   link.href = dataUrl
   link.click()
 }
@@ -482,11 +483,13 @@ const downloadAllImages = () => {
   downloadContainer.style.display = 'none'
   document.body.appendChild(downloadContainer)
   
+  const timestamp = new Date().toISOString().replace(/[:.]/g, '-')
+  
   // 为每个图片创建下载链接
   generatedImages.value.forEach((dataUrl, index) => {
     const link = document.createElement('a')
     link.href = dataUrl
-    link.download = `chat-image-${index + 1}.png`
+    link.download = `chat-${timestamp}-${index + 1}.png`
     downloadContainer.appendChild(link)
     
     // 延迟触发下载，避免浏览器限制
