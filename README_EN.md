@@ -5,7 +5,7 @@
 ## Introduction
 Chat2Image is a tool that converts chat conversations into images. It can generate visually appealing images from user inputs and AI responses, supports Markdown formatting, and offers various customization options.
 
-![Chat2Image](https://oss.yufenglab.cn:443/blog/chat-2025-02-18T02-48-37-865Z-1.png)
+![Chat2Image](https://img.yufenglab.cn:443/blog/chat-2025-02-18T02-48-37-865Z-1.png)
 
 ## Features
 - Convert user-AI conversations to images
