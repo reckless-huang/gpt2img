@@ -197,12 +197,18 @@ const isMarkdown = ref(true)
 const previewRefs = reactive([])
 const generatedImages = ref([])
 
+// 检测是否为移动设备
+const isMobile = () => {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+    || window.innerWidth <= 768
+}
+
 // 图片生成配置
 const imageConfig = reactive({
   maxWidth: 720,    // 图片最大宽度
   padding: 40,      // 内边距
   backgroundColor: '#f5f5f5',  // 背景色
-  sizeType: 'pc'    // 尺寸类型：pc/mobile/landscape/portrait
+  sizeType: isMobile() ? 'mobile' : 'pc'    // 根据设备类型设置默认值
 })
 
 // 预设尺寸配置
@@ -302,12 +308,30 @@ const pagedMessages = computed(() => {
   return finalPages.filter(page => page && page.length > 0)
 })
 
+// 在组件挂载时初始化尺寸
+onMounted(() => {
+  // 如果是移动设备，自动调整尺寸
+  if (isMobile()) {
+    const containerWidth = document.querySelector('.preview-container')?.offsetWidth || 800
+    imageConfig.maxWidth = Math.min(sizeConfigs.mobile.width, containerWidth - 40)
+    imageConfig.padding = sizeConfigs.mobile.padding
+  }
+})
+
+// 监听窗口大小变化
+window.addEventListener('resize', () => {
+  if (isMobile() && imageConfig.sizeType === 'mobile') {
+    const containerWidth = document.querySelector('.preview-container')?.offsetWidth || 800
+    imageConfig.maxWidth = Math.min(sizeConfigs.mobile.width, containerWidth - 40)
+  }
+})
+
 // 切换尺寸类型
 const changeSizeType = (type) => {
   imageConfig.sizeType = type
   if (type === 'mobile') {
     const containerWidth = document.querySelector('.preview-container')?.offsetWidth || 800
-    imageConfig.maxWidth = Math.min(sizeConfigs[type].width, containerWidth - 40) // 40px 为左右内边距
+    imageConfig.maxWidth = Math.min(sizeConfigs.mobile.width, containerWidth - 40)
   } else {
     imageConfig.maxWidth = sizeConfigs[type].width
   }
@@ -319,10 +343,12 @@ const messages = computed(() => {
   
   // 处理用户输入
   if (userInput.value.trim()) {
+    // 将用户输入按换行符分割，并用 <br> 替换
+    const formattedUserInput = userInput.value.replace(/\n/g, '<br>')
     result.push({
-      text: userInput.value,
+      text: formattedUserInput,
       isUser: true,
-      isHtml: false,
+      isHtml: true,  // 改为 true 以支持 HTML
       avatar: avatarConfig.userAvatar
     })
   }
@@ -823,6 +849,7 @@ const downloadAllImages = () => {
 @media screen and (max-width: 480px) {
   .container {
     padding: 10px;
+    margin: 10px;
   }
 
   .preview-container {
@@ -835,6 +862,33 @@ const downloadAllImages = () => {
 
   .preview-pages {
     gap: 15px;
+  }
+
+  .chat-panel {
+    padding: 16px;
+  }
+
+  .preview-header {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .size-selector {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 5px;
+  }
+
+  :deep(.el-radio-group) {
+    flex-wrap: nowrap;
+  }
+
+  .ai-avatar-group {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 5px;
+    -webkit-overflow-scrolling: touch;
   }
 }
 </style> 
