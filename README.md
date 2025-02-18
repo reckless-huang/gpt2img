@@ -43,7 +43,7 @@ docker build -t chat2image -f build/Dockerfile .
 docker run -d -p 18080:18080 chat2image
 
 ## 在线预览
-访问 [chat2img.yufenglab.cn](https://chat2img.yufenglab.cn) 体验在线版本
+访问 [gpt2img.yufenglab.cn](https://gpt2img.yufenglab.cn) 体验在线版本
 
 ## 贡献
 欢迎提交 Issue 和 Pull Request！

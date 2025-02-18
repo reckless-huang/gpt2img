@@ -42,7 +42,7 @@ docker build -t chat2image -f build/Dockerfile .
 docker run -d -p 18080:18080 chat2image
 
 ## Online Demo
-Visit [chat2img.yufenglab.cn](https://chat2img.yufenglab.cn) to try the online version
+Visit [gpt2img.yufenglab.cn](https://gpt2img.yufenglab.cn/) to try the online version
 
 ## Contributing
 Issues and Pull Requests are welcome!
